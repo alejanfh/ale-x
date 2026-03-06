@@ -2,13 +2,19 @@ import { fetcher } from "@/lib/coingecko.actions";
 import DataTable from "@/components/DataTable";
 import Image from "next/image";
 import Link from "next/link";
-
-import { cn, formatPercentage, formatPrice } from "@/lib/utils";
+import { cn, formatCurrency, formatPercentage } from "@/lib/utils";
+import CoinsPagination from "@/components/CoinsPagination";
 
 const Coins = async ({ searchParams }: NextPageProps) => {
+  const { page } = await searchParams;
+
+  const currentPage = Number(page) || 1;
+  const perPage = 10;
   const coinsData = await fetcher<CoinMarketData[]>("/coins/markets", {
     vs_currency: "usd",
     order: "market_cap_desc",
+    per_page: perPage,
+    page: currentPage,
     sparkline: "false",
     price_change_percentage: "24h",
   });
@@ -39,7 +45,7 @@ const Coins = async ({ searchParams }: NextPageProps) => {
     {
       header: "Price",
       cellClassName: "price-cell",
-      cell: (coin) => formatPrice(coin.current_price),
+      cell: (coin) => formatCurrency(coin.current_price),
     },
     {
       header: "24h Change",
@@ -63,9 +69,14 @@ const Coins = async ({ searchParams }: NextPageProps) => {
     {
       header: "Market Cap",
       cellClassName: "market-cap-cell",
-      cell: (coin) => formatPrice(coin.market_cap),
+      cell: (coin) => formatCurrency(coin.market_cap),
     },
   ];
+
+  const hasMorePages = coinsData.length === perPage;
+
+  const estimatedTotalPages =
+    currentPage >= 100 ? Math.ceil(currentPage / 100) * 100 + 100 : 100;
 
   return (
     <main id="coins-page">
@@ -77,6 +88,12 @@ const Coins = async ({ searchParams }: NextPageProps) => {
           columns={columns}
           data={coinsData}
           rowKey={(coin) => coin.id}
+        />
+
+        <CoinsPagination
+          currentPage={currentPage}
+          totalPages={estimatedTotalPages}
+          hasMorePages={hasMorePages}
         />
       </div>
     </main>
