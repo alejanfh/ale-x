@@ -17,7 +17,6 @@ const Converter = ({ symbol, icon, priceList }: ConverterProps) => {
 
   const convertedPrice = (parseFloat(amount) || 0) * priceList[currency];
 
-  console.log("convertedPrice", convertedPrice);
   return (
     <div id="converter">
       <h4>{symbol.toUpperCase()} Converter</h4>
