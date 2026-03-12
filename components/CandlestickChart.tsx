@@ -31,7 +31,7 @@ const CandlestickChart = ({
   const chartContainerRef = useRef<HTMLDivElement | null>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const candleSeriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
-  const prevOhlcDataLength = useRef<number>(data?.lenght || 0);
+  const prevOhlcDataLength = useRef<number>(data?.length || 0);
 
   const [period, setPeriod] = useState(initialPeriod);
   const [ohlcData, setOhlcData] = useState<OHLCData[]>(data ?? []);
