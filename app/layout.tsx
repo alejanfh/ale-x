@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CoinPulse",
+  title: "Ale X",
   description:
     "Crypto Screener App with a built-in High-Frecuency Terminal & Dashboard",
 };
